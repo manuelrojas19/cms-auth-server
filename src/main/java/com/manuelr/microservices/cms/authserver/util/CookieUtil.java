@@ -1,5 +1,6 @@
 package com.manuelr.microservices.cms.authserver.util;
 
+import com.manuelr.cms.commons.utils.SecurityCipher;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpCookie;
 import org.springframework.http.ResponseCookie;
@@ -16,6 +17,7 @@ public class CookieUtil {
 
     public HttpCookie createAccessTokenCookie(String token, Long duration) {
         String encryptedToken = SecurityCipher.encrypt(token);
+        if (encryptedToken == null) throw new AssertionError();
         return ResponseCookie.from(accessTokenCookieName, encryptedToken)
                 .maxAge(duration)
                 .httpOnly(true)
@@ -25,6 +27,7 @@ public class CookieUtil {
 
     public HttpCookie createRefreshTokenCookie(String token, Long duration) {
         String encryptedToken = SecurityCipher.encrypt(token);
+        if (encryptedToken == null) throw new AssertionError();
         return ResponseCookie.from(refreshTokenCookieName, encryptedToken)
                 .maxAge(duration)
                 .httpOnly(true)

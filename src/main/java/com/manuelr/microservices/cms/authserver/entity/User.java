@@ -17,7 +17,6 @@ import java.util.Collections;
 @Setter
 @Builder
 public class User implements UserDetails {
-
     @Id
     @SequenceGenerator(
             name = "user_sequence",
@@ -29,16 +28,23 @@ public class User implements UserDetails {
             strategy = GenerationType.SEQUENCE
     )
     private Long id;
+
     @Column(columnDefinition = "TEXT", nullable = false, unique = true)
     private String username;
-    @Column(columnDefinition = "TEXT", nullable = false, length = 16)
+
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String password;
-    private boolean accountNonExpired;
-    private boolean accountNonLocked;
-    private boolean credentialsNonExpired;
-    private boolean enabled;
+
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    private boolean accountNonExpired = true;
+
+    private boolean accountNonLocked = true;
+
+    private boolean credentialsNonExpired = true;
+
+    private boolean enabled = true;
 
     public User(String username, String password, Role role) {
         this.username = username;
@@ -54,32 +60,32 @@ public class User implements UserDetails {
     }
 
     @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
     public String getUsername() {
         return username;
     }
 
     @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return accountNonExpired;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return accountNonLocked;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return credentialsNonExpired;
     }
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 }
