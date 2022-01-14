@@ -1,11 +1,17 @@
 package com.manuelr.microservices.cms.authserver.controller;
 
-import com.manuelr.microservices.cms.authserver.dto.*;
+import com.manuelr.cms.commons.dto.auth.SignupRequestDto;
+import com.manuelr.cms.commons.dto.auth.SignupResponseDto;
+import com.manuelr.microservices.cms.authserver.dto.SigninRequestDto;
+import com.manuelr.microservices.cms.authserver.dto.SigninResponseDto;
+import com.manuelr.microservices.cms.authserver.dto.UserDto;
 import com.manuelr.microservices.cms.authserver.service.AuthService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Slf4j
 @AllArgsConstructor
@@ -24,7 +30,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<SignupResponseDto> signUp(@RequestBody SignupRequestDto request) {
+    public ResponseEntity<SignupResponseDto> signUp(@Valid @RequestBody SignupRequestDto request) {
         log.info("Trying to signup {}", request);
         return authService.signup(request);
     }
@@ -37,8 +43,8 @@ public class AuthController {
     }
 
     @PostMapping(value = "/refresh_token")
-    public ResponseEntity<SigninResponseDto> refreshToken(@CookieValue(name = "accessToken") String accessToken,
-                                                          @CookieValue(name = "refreshToken") String refreshToken) {
+    public ResponseEntity<SigninResponseDto> refreshToken(@CookieValue(name = "refreshToken") String refreshToken) {
+        log.info("Trying to refresh token {}", refreshToken);
         return authService.refresh(refreshToken);
     }
 

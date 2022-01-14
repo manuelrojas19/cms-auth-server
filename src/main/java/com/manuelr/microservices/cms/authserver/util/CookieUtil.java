@@ -1,6 +1,6 @@
 package com.manuelr.microservices.cms.authserver.util;
 
-import com.manuelr.cms.commons.utils.SecurityCipher;
+import com.manuelr.cms.commons.security.SecurityCipher;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpCookie;
 import org.springframework.http.ResponseCookie;

@@ -30,13 +30,15 @@ public class User implements UserDetails {
     private Long id;
 
     @Column(columnDefinition = "TEXT", nullable = false, unique = true)
-    private String username;
+    private String email;
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    private Long personId;
 
     private boolean accountNonExpired = true;
 
@@ -46,8 +48,8 @@ public class User implements UserDetails {
 
     private boolean enabled = true;
 
-    public User(String username, String password, Role role) {
-        this.username = username;
+    public User(String email, String password, Role role) {
+        this.email = email;
         this.password = password;
         this.role = role;
     }
@@ -61,7 +63,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return email;
     }
 
     @Override

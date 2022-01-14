@@ -1,4 +1,4 @@
-package com.manuelr.microservices.cms.authserver.service;
+package com.manuelr.microservices.cms.authserver.service.impl;
 
 import com.manuelr.microservices.cms.authserver.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userRepository.findByUsername(email)
-                .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User with email was not found"));
     }
 }
