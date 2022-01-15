@@ -16,6 +16,7 @@ import java.util.Collections;
 @Getter
 @Setter
 @Builder
+@ToString
 public class User implements UserDetails {
     @Id
     @SequenceGenerator(

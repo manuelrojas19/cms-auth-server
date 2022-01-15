@@ -1,8 +1,8 @@
 package com.manuelr.microservices.cms.authserver.service.impl;
 
-import com.manuelr.cms.commons.dto.auth.SignupRequestDto;
-import com.manuelr.cms.commons.dto.auth.SignupResponseDto;
-import com.manuelr.cms.commons.enums.SignupStatus;
+import com.manuelr.cms.commons.dto.SignupRequestDto;
+import com.manuelr.cms.commons.dto.SignupResponseDto;
+import com.manuelr.cms.commons.event.signup.SignupStatus;
 import com.manuelr.cms.commons.security.SecurityCipher;
 import com.manuelr.microservices.cms.authserver.dto.SigninRequestDto;
 import com.manuelr.microservices.cms.authserver.dto.SigninResponseDto;
@@ -34,7 +34,7 @@ import org.springframework.util.StringUtils;
 @Service
 @AllArgsConstructor
 public class AuthServiceImpl implements AuthService {
-    private static final String AUTH_SUCCESSFUL_MSG = "Authentication was successful. Tokens are created in cookie.";
+    private static final String AUTH_SUCCESSFUL_MSG = "Registration was successful. Please signin.";
 
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
@@ -85,26 +85,19 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public ResponseEntity<SignupResponseDto> signup(SignupRequestDto request) {
         if (userRepository.existsByEmail(request.getEmail())) throw new ConflictException("Email is already taken");
+
         User user = userRepository.save(new User(request.getEmail(), passwordEncoder
                 .encode(request.getPassword()), Role.valueOf(request.getRole().name())));
-
         request.setUserId(user.getId());
         request.getPersonData().setEmail(user.getEmail());
         request.getPersonData().setUserId(user.getId());
 
         log.info("Publishing event, data --> {}", request);
+        signupStatusPublisher.raiseSignupEvent(request, SignupStatus.SUCCESS);
 
-        signupStatusPublisher.publishSignupEvent(request, SignupStatus.SUCCESS);
-
-        Token accessToken = jwtTokenUtil.generateAccessToken(user);
-        Token refreshToken = jwtTokenUtil.generateRefreshToken(user);
-
-        HttpHeaders responseHeaders = new HttpHeaders();
-        addAccessTokenCookie(responseHeaders, accessToken);
-        addRefreshTokenCookie(responseHeaders, refreshToken);
         SignupResponseDto response = new SignupResponseDto(SignupResponseDto.SuccessFailure.SUCCESS,
                 AUTH_SUCCESSFUL_MSG);
-        return ResponseEntity.ok().headers(responseHeaders).body(response);
+        return ResponseEntity.ok().body(response);
     }
 
     @Override

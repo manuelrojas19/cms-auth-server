@@ -1,6 +1,6 @@
 package com.manuelr.microservices.cms.authserver.config;
 
-import com.manuelr.cms.commons.event.SignupEvent;
+import com.manuelr.cms.commons.event.signup.SignupEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import reactor.core.publisher.Flux;
@@ -9,7 +9,7 @@ import reactor.core.publisher.Sinks;
 import java.util.function.Supplier;
 
 @Configuration
-public class EventPublisherConfig {
+public class SignupConfig {
 
     @Bean
     public Sinks.Many<SignupEvent> signupSinks() {
