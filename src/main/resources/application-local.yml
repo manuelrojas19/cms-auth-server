@@ -1,4 +1,6 @@
 spring:
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration
   application:
     name: cms-auth-server
   cloud:
@@ -37,7 +39,6 @@ server:
 feign:
   circuitbreaker:
     enabled: true
-
 authentication-dev:
   auth:
     tokenSecret: myTokenSecret

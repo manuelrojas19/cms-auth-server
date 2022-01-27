@@ -1,4 +1,4 @@
-package com.manuelr.microservices.cms.authserver.service.event;
+package com.manuelr.microservices.cms.authserver.event.publisher;
 
 import com.manuelr.cms.commons.dto.SignupRequestDto;
 import com.manuelr.cms.commons.event.signup.SignupEvent;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Sinks;
 
 @Service
-public class SignupStatusPublisher {
+public class SignupEventPublisher {
 
     @Autowired
     private Sinks.Many<SignupEvent> signupSinks;

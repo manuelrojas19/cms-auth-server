@@ -14,7 +14,7 @@ import com.manuelr.microservices.cms.authserver.exception.BadRequestException;
 import com.manuelr.microservices.cms.authserver.exception.ConflictException;
 import com.manuelr.microservices.cms.authserver.repository.UserRepository;
 import com.manuelr.microservices.cms.authserver.service.AuthService;
-import com.manuelr.microservices.cms.authserver.service.event.SignupStatusPublisher;
+import com.manuelr.microservices.cms.authserver.event.publisher.SignupEventPublisher;
 import com.manuelr.microservices.cms.authserver.util.CookieUtil;
 import com.manuelr.microservices.cms.authserver.util.JwtTokenUtil;
 import lombok.AllArgsConstructor;
@@ -38,7 +38,7 @@ public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
-    private final SignupStatusPublisher signupStatusPublisher;
+    private final SignupEventPublisher signupEventPublisher;
     private final PasswordEncoder passwordEncoder;
     private final CookieUtil cookieUtil;
     private final JwtTokenUtil jwtTokenUtil;
@@ -93,7 +93,7 @@ public class AuthServiceImpl implements AuthService {
         request.getPersonData().setUserId(user.getId());
 
         log.info("Publishing event, data --> {}", request);
-        signupStatusPublisher.raiseSignupEvent(request, SignupStatus.SUCCESS);
+        signupEventPublisher.raiseSignupEvent(request, SignupStatus.SUCCESS);
 
         SignupResponseDto response = new SignupResponseDto(SignupResponseDto.SuccessFailure.SUCCESS,
                 AUTH_SUCCESSFUL_MSG);
