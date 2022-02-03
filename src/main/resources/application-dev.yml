@@ -1,0 +1,37 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/cms_auth_db
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    database: postgresql
+    generate-ddl: true
+    open-in-view: false
+  cloud:
+    discovery:
+      enabled: true
+    stream:
+      function:
+        definition: signupSupplier;registrationEventConsumer
+      bindings:
+        signupSupplier-out-0:
+          destination: signup-event
+        registrationEventConsumer-in-0:
+          destination: registration-event
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+    fetch-registry: true
+    register-with-eureka: true
+server:
+  port: 8000
+  forward-headers-strategy: framework
+feign:
+  circuitbreaker:
+    enabled: true

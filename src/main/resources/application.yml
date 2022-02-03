@@ -1,0 +1,9 @@
+application:
+  name: auth-server
+authentication-dev:
+  auth:
+    tokenSecret: myTokenSecret
+    tokenExpirationMsec: 3600000
+    refreshTokenExpirationMsec: 77760000000
+    accessTokenCookieName: accessToken
+    refreshTokenCookieName: refreshToken
