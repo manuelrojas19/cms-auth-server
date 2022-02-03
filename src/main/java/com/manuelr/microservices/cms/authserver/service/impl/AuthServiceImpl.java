@@ -34,7 +34,8 @@ import org.springframework.util.StringUtils;
 @Service
 @AllArgsConstructor
 public class AuthServiceImpl implements AuthService {
-    private static final String AUTH_SUCCESSFUL_MSG = "Registration was successful. Please signin.";
+    private static final String REGISTRATION_SUCCESSFUL_MSG = "Registration was successful. Please signin.";
+    private static final String SIGNIN_SUCCESSFUL_MSG = "Signin was successful.";
 
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
@@ -77,7 +78,7 @@ public class AuthServiceImpl implements AuthService {
 
         SigninResponseDto response = new
                 SigninResponseDto(SigninResponseDto.SuccessFailure.SUCCESS,
-                AUTH_SUCCESSFUL_MSG);
+                SIGNIN_SUCCESSFUL_MSG);
         return ResponseEntity.ok().headers(responseHeaders).body(response);
     }
 
@@ -96,7 +97,7 @@ public class AuthServiceImpl implements AuthService {
         signupEventPublisher.raiseSignupEvent(request, SignupStatus.SUCCESS);
 
         SignupResponseDto response = new SignupResponseDto(SignupResponseDto.SuccessFailure.SUCCESS,
-                AUTH_SUCCESSFUL_MSG);
+                REGISTRATION_SUCCESSFUL_MSG);
         return ResponseEntity.ok().body(response);
     }
 
@@ -136,7 +137,7 @@ public class AuthServiceImpl implements AuthService {
                 newAccessToken.getDuration()).toString());
 
         SigninResponseDto loginResponse = new SigninResponseDto(SigninResponseDto.SuccessFailure.SUCCESS,
-                AUTH_SUCCESSFUL_MSG);
+                SIGNIN_SUCCESSFUL_MSG);
         return ResponseEntity.ok().headers(responseHeaders).body(loginResponse);
     }
 
