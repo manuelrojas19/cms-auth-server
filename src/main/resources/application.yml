@@ -1,5 +1,6 @@
-application:
-  name: auth-server
+spring:
+  application:
+    name: auth-server
 authentication-dev:
   auth:
     tokenSecret: myTokenSecret
